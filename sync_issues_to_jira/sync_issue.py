@@ -327,7 +327,7 @@ def _update_github_with_merged_keyword(jira, gh_issue, jira_issue):
 
     new_summary = merged_keyword + ": " + old_summary
 
-    jira.jira_issue.update(summary=new_summary)
+    jira_issue.update(summary=new_summary)
 
     retries = 5
     while True:
