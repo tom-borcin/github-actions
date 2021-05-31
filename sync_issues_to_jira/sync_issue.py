@@ -54,8 +54,6 @@ def handle_issue_closed(jira, event):
     # note: Not auto-closing the synced JIRA issue because GitHub
     # issues often get closed for the wrong reasons - ie the user
     # found a workaround but the root cause still exists.
-    print("event: " + str(event))
-    
     github = Github(os.environ['GITHUB_TOKEN'])
     repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
 
@@ -63,7 +61,7 @@ def handle_issue_closed(jira, event):
     print("issue: " + str(repo.get_issue(number=3)))
     events = repo.get_issue(number=3).get_events()
     for e in events:
-        print("event: " + str(e))
+        print("event: " + str(repo.get_issue(number=3).get_event(e)))
 
     issue = _leave_jira_issue_comment(jira, event, "closed", False)
     if issue is not None:
