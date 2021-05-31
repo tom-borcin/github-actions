@@ -55,8 +55,14 @@ def handle_issue_closed(jira, event):
     # issues often get closed for the wrong reasons - ie the user
     # found a workaround but the root cause still exists.
     print("event: " + str(event))
-    gh_issue = event["issue"]
-    print("gh issue events: " + str(gh_issue.events))
+    
+    github = Github(os.environ['GITHUB_TOKEN'])
+    repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
+
+    print("repo: " + str(repo))
+    print("issue: " + str(repo.get_issue(number=3)))
+    print("events: " + str(repo.get_issue(number=3).get_events()))
+
     issue = _leave_jira_issue_comment(jira, event, "closed", False)
     if issue is not None:
         _update_link_resolved(jira, event["issue"], issue)
