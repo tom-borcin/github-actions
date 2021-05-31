@@ -322,7 +322,7 @@ def _update_github_with_merged_keyword(jira, gh_issue, jira_issue):
 
     merged_keyword = "[Merged]"
 
-    old_summary = issue.fields.summary
+    old_summary = jira_issue.fields.summary
     print("old_summary: " + str(old_summary))
 
     new_summary = merged_keyword + ": " + old_summary
