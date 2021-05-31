@@ -61,9 +61,7 @@ def handle_issue_closed(jira, event):
     print("issue: " + str(repo.get_issue(number=3)))
     events = repo.get_issue(number=3).get_events()
     for e in events:
-        print("event payload: " + str(e["payload"]))
-        print("event type: " + str(e["type"]))
-
+        print("event type: " + str(e.commit_id))
     issue = _leave_jira_issue_comment(jira, event, "closed", False)
     if issue is not None:
         _update_link_resolved(jira, event["issue"], issue)
