@@ -114,7 +114,7 @@ def handle_comment_created(jira, event):
     jira.add_comment(jira_issue.id, _get_jira_comment_body(gh_comment))
 
     if "cherry-picked" in gh_comment["body"]:
-        _update_github_with_merged_keyword(jira, gh_issue, jira_issue)
+        _update_github_with_merged_keyword(jira, event["issue"], jira_issue)
 
 
 def handle_comment_edited(jira, event):
