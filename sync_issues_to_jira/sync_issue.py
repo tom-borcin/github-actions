@@ -108,9 +108,13 @@ def handle_issue_reopened(jira, event):
 
 def handle_comment_created(jira, event):
     gh_comment = event["comment"]
+    print("gh_comment: " + str(gh_comment))
 
     jira_issue = _find_jira_issue(jira, event["issue"], True)
     jira.add_comment(jira_issue.id, _get_jira_comment_body(gh_comment))
+
+    if "cherry-picked" in gh_comment:
+        _update_github_with_merged_keyword(jira, gh_issue, jira_issue)
 
 
 def handle_comment_edited(jira, event):
@@ -306,6 +310,40 @@ def _update_github_with_jira_key(gh_issue, jira_issue):
             time.sleep(random.randrange(1, 5))
             retries -= 1
 
+def _update_github_with_merged_keyword(jira, gh_issue, jira_issue):
+    """ Prepend the [Merged] keyword to the GitHub issue
+        (updates made by github actions don't trigger new actions)
+    """
+    github = Github(os.environ["GITHUB_TOKEN"])
+
+    repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
+
+    api_gh_issue = repo.get_issue(gh_issue["number"])
+
+    merged_keyword = "[Merged]"
+
+    old_summary = issue.fields.summary
+    print("old_summary: " + str(old_summary))
+
+    new_summary = merged_keyword + ": " + old_summary
+
+    fields = {
+        "summary": new_summary,
+    }
+
+    _update_components_field(jira, fields, jira_issue)
+
+    retries = 5
+    while True:
+        try:
+            api_gh_issue.edit(title="%s %s" % (merged_keyword, api_gh_issue.title))
+            break
+        except GithubException as e:
+            if retries == 0:
+                raise
+            print("GitHub edit failed: %s (%d retries)" % (e, retries))
+            time.sleep(random.randrange(1, 5))
+            retries -= 1
 
 def _update_components_field(jira, fields, existing_issue=None):
     """
