@@ -61,7 +61,9 @@ def handle_issue_closed(jira, event):
 
     print("repo: " + str(repo))
     print("issue: " + str(repo.get_issue(number=3)))
-    print("events: " + str(repo.get_issue(number=3).get_events()))
+    events = repo.get_issue(number=3).get_events()
+    for e in events:
+        print("event: " + str(e))
 
     issue = _leave_jira_issue_comment(jira, event, "closed", False)
     if issue is not None:
