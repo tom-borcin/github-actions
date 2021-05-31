@@ -54,6 +54,9 @@ def handle_issue_closed(jira, event):
     # note: Not auto-closing the synced JIRA issue because GitHub
     # issues often get closed for the wrong reasons - ie the user
     # found a workaround but the root cause still exists.
+    print("event: " + str(event))
+    gh_issue = event["issue"]
+    print("gh issue events: " + str(gh_issue.events))
     issue = _leave_jira_issue_comment(jira, event, "closed", False)
     if issue is not None:
         _update_link_resolved(jira, event["issue"], issue)
