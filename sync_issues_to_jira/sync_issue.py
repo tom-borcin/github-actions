@@ -108,12 +108,12 @@ def handle_issue_reopened(jira, event):
 
 def handle_comment_created(jira, event):
     gh_comment = event["comment"]
-    print("gh_comment: " + str(gh_comment))
+    print("gh_comment body: " + str(gh_comment["body"]))
 
     jira_issue = _find_jira_issue(jira, event["issue"], True)
     jira.add_comment(jira_issue.id, _get_jira_comment_body(gh_comment))
 
-    if "cherry-picked" in gh_comment:
+    if "cherry-picked" in gh_comment["body"]:
         _update_github_with_merged_keyword(jira, gh_issue, jira_issue)
 
 
