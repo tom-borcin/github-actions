@@ -33,8 +33,8 @@ def main():
         print('Not running in GitHub action context, nothing to do')
         return
 
-    if not os.environ['GITHUB_REPOSITORY'].startswith('espressif/'):
-        print('Not an Espressif repo, nothing to sync to JIRA')
+    if not os.environ['GITHUB_REPOSITORY'].startswith('tom-borcin/'):
+        print('Not an tom-borcin repo, nothing to sync to JIRA')
         return
 
     # Connect to Jira server

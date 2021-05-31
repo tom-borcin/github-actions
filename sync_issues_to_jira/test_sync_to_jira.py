@@ -49,7 +49,7 @@ def run_sync_issue(event_name, event, jira_issue=None):
         os.environ['JIRA_URL'] = 'https://test.test:88/'
         os.environ['JIRA_USER'] = 'test_user'
         os.environ['JIRA_PASS'] = 'test_pass'
-        os.environ['GITHUB_REPOSITORY'] = 'espressif/fake'
+        os.environ['GITHUB_REPOSITORY'] = 'tom-borcin/fake'
 
         github_class = create_autospec(github.Github)
 
@@ -104,8 +104,8 @@ def run_sync_issue(event_name, event, jira_issue=None):
 class TestIssuesEvents(unittest.TestCase):
 
     def test_issue_opened(self):
-        issue = {"html_url": "https://github.com/espressif/fake/issues/3",
-                 "repository_url": "https://github.com/espressif/fake",
+        issue = {"html_url": "https://github.com/tom-borcin/fake/issues/3",
+                 "repository_url": "https://github.com/tom-borcin/fake",
                  "number": 3,
                  "title": "Test issue",
                  "body": "I am a new test issue\nabc\n测试\n",
@@ -138,7 +138,7 @@ class TestIssuesEvents(unittest.TestCase):
         # check that the github repo was updated via expected sequence of API calls
         sync_issue.Github.assert_called_with(MOCK_GITHUB_TOKEN)
         github_obj = sync_issue.Github.return_value
-        github_obj.get_repo.assert_called_with("espressif/fake")
+        github_obj.get_repo.assert_called_with("tom-borcin/fake")
         repo_obj = github_obj.get_repo.return_value
         repo_obj.get_issue.assert_called_with(issue["number"])
         issue_obj = repo_obj.get_issue.return_value
@@ -165,8 +165,8 @@ class TestIssuesEvents(unittest.TestCase):
         self.assertEqual(False, new_status["resolved"])
 
     def test_issue_edited(self):
-        issue = {"html_url": "https://github.com/espressif/fake/issues/11",
-                 "repository_url": "https://github.com/espressif/fake",
+        issue = {"html_url": "https://github.com/tom-borcin/fake/issues/11",
+                 "repository_url": "https://github.com/tom-borcin/fake",
                  "number": 11,
                  "title": "Edited issue",
                  "body": "Edited issue content goes here",
@@ -191,7 +191,7 @@ class TestIssuesEvents(unittest.TestCase):
         """
         if gh_issue is None:
             gh_number = hash(action) % 43
-            gh_issue = {"html_url": "https://github.com/espressif/fake/issues/%d" % gh_number,
+            gh_issue = {"html_url": "https://github.com/tom-borcin/fake/issues/%d" % gh_number,
                         "number": gh_number,
                         "title": "Test issue",
                         "body": "I am a test issue\nabc\n\n",
@@ -218,8 +218,8 @@ class TestIssuesEvents(unittest.TestCase):
         return m_jira
 
     def test_pr_opened(self):
-        pr = {"html_url": "https://github.com/espressif/fake/pulls/4",
-              "base": {"repo": {"html_url": "https://github.com/espressif/fake"}},
+        pr = {"html_url": "https://github.com/tom-borcin/fake/pulls/4",
+              "base": {"repo": {"html_url": "https://github.com/tom-borcin/fake"}},
               "number": 4,
               "title": "Test issue",
               "body": "I am a new Pull Request!\nabc\n测试\n",
@@ -257,8 +257,8 @@ class TestIssueCommentEvents(unittest.TestCase):
         """
         if gh_issue is None:
             gh_number = hash(action) % 50
-            gh_issue = {"html_url": "https://github.com/espressif/fake/issues/%d" % gh_number,
-                        "repository_url": "https://github.com/espressif/fake",
+            gh_issue = {"html_url": "https://github.com/tom-borcin/fake/issues/%d" % gh_number,
+                        "repository_url": "https://github.com/tom-borcin/fake",
                         "number": gh_number,
                         "title": "Test issue",
                         "body": "I am a test issue\nabc\n\n",
@@ -268,7 +268,7 @@ class TestIssueCommentEvents(unittest.TestCase):
         if gh_comment is None:
             gh_comment_id = hash(action) % 404
             gh_comment = {"html_url": gh_issue["html_url"] + "#" + str(gh_comment_id),
-                          "repository_url": "https://github.com/espressif/fake",
+                          "repository_url": "https://github.com/tom-borcin/fake",
                           "id": gh_comment_id,
                           "user": {"login": "commentuser"},
                           "body": "ZOMG a comment!"
