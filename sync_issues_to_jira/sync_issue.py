@@ -66,10 +66,12 @@ def handle_issue_closed(jira, event):
 def handle_pr_closed(jira, event):
     github = Github(os.environ['GITHUB_TOKEN'])
     repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
-
+    gh_issue = event["issue"]
+    print("gh_issue: " + str(gh_issue))
+    print("event[number]: " + str(event["number"]))
     print("repo: " + str(repo))
-    print("issue: " + str(repo.get_issue(number=3)))
-    events = repo.get_issue(number=3).get_events()
+    print("issue: " + str(repo.get_issue(gh_issue)))
+    events = repo.get_issue(gh_issue).get_events()
     closed_with_commit = False
     for e in events:
         print("event commit: " + str(e.commit_id))
@@ -78,7 +80,8 @@ def handle_pr_closed(jira, event):
         else:
             closed_with_commit = False
     if closed_with_commit:
-        repo.get_issue(number=3).create_comment("This comment was cherry-picked")
+        print()
+        repo.get_issue(gh_issue).create_comment("This comment was cherry-picked")
 
 def handle_issue_labeled(jira, event):
     gh_issue = event["issue"]
