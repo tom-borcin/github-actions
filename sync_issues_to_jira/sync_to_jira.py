@@ -69,9 +69,10 @@ def main():
     repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
     gh_issue = event["issue"]
     is_pr = "pull_request" in gh_issue
-    if is_pr and repo.has_in_collaborators(gh_issue["user"]["login"]):
-        print("Skipping issue sync for Pull Request from collaborator")
-        return
+    # TODO: uncomment after
+    # if is_pr and repo.has_in_collaborators(gh_issue["user"]["login"]):
+    #     print("Skipping issue sync for Pull Request from collaborator")
+    #     return
 
     action_handlers = {
         'issues': {
