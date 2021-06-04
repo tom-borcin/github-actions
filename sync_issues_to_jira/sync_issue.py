@@ -54,8 +54,8 @@ def handle_issue_closed(jira, event):
     # note: Not auto-closing the synced JIRA issue because GitHub
     # issues often get closed for the wrong reasons - ie the user
     # found a workaround but the root cause still exists.
-    print(event["issue"]["pull_request"])
-    
+    print("event[issue][pull_request]: " + str(event["issue"]["pull_request"]))
+
     if event["issue"]["pull_request"]:
         handle_pr_closed(jira, event)
     
@@ -78,7 +78,7 @@ def handle_pr_closed(jira, event):
         else:
             closed_with_commit = False
     if closed_with_commit:
-        github.get_issue(number=3).create_comment("This comment was cherry-picked")
+        repo.get_issue(number=3).create_comment("This comment was cherry-picked")
 
 def handle_issue_labeled(jira, event):
     gh_issue = event["issue"]
