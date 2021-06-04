@@ -54,6 +54,7 @@ def handle_issue_closed(jira, event):
     # note: Not auto-closing the synced JIRA issue because GitHub
     # issues often get closed for the wrong reasons - ie the user
     # found a workaround but the root cause still exists.
+    print(event["issue"]["pull_request"])
     
     if event["issue"]["pull_request"]:
         handle_pr_closed(jira, event)
