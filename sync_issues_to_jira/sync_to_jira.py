@@ -53,6 +53,12 @@ def main():
         event = json.load(f)
         print(json.dumps(event, indent=4))
 
+    # Check if it's a push event
+    if os.environ['PUSH_EVENT']:
+        print('GITHUB_EVENT_NAME: ' + str(os.environ['GITHUB_EVENT_NAME']))
+        check_push_event(event)
+        return
+
     event_name = os.environ['GITHUB_EVENT_NAME']  # The name of the webhook event that triggered the workflow.
     action = event["action"]
 
@@ -69,10 +75,10 @@ def main():
     repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
     gh_issue = event["issue"]
     is_pr = "pull_request" in gh_issue
-    # TODO: uncomment after
-    # if is_pr and repo.has_in_collaborators(gh_issue["user"]["login"]):
-    #     print("Skipping issue sync for Pull Request from collaborator")
-    #     return
+ 
+    if is_pr and repo.has_in_collaborators(gh_issue["user"]["login"]):
+        print("Skipping issue sync for Pull Request from collaborator")
+        return
 
     action_handlers = {
         'issues': {
