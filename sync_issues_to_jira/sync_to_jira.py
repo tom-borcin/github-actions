@@ -55,8 +55,7 @@ def main():
         print(json.dumps(event, indent=4))
 
     # Check if it's a push event
-    if os.environ['PUSH_EVENT']:
-        print('GITHUB_EVENT_NAME: ' + str(os.environ['GITHUB_EVENT_NAME']))
+    if os.environ['GITHUB_EVENT_NAME'] == 'push':
         check_push_event(event)
         return
 
