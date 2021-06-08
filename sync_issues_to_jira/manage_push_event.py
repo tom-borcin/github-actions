@@ -22,9 +22,12 @@ def check_push_event(event):
         print('state: ' + str(repo.get_issue(int(issue)).state))
         print('pull_request: ' + str(repo.get_issue(int(issue)).pull_request))
         print('as_pull_request: ' + str(repo.get_issue(int(issue)).as_pull_request()))
-        if repo.get_issue(int(issue)).as_pull_request():
-            print('=======UPDATE=======')
-            update_pull_request(repo.get_issue(int(issue)).as_pull_request())
+        try:
+            if repo.get_issue(int(issue)).as_pull_request():
+                print('=======UPDATE=======')
+                update_pull_request(repo.get_issue(int(issue)).as_pull_request())
+        except UnknownObjectException:
+            print("Cannot find issue '%s'. Skipping." % issue)
 
 def update_pull_request(pull_request):
     if pull_request.state == 'open':
@@ -38,18 +41,19 @@ def update_pull_request(pull_request):
 
 
 def parse_commit_message(commit_message):
-    # Regex matches numbers that come after Fix, fix, Fixed, fixed, Fixes, fixes, Fixing, fixing keyword followed by any
-    # combination of spaces and colons, followed by exactly one hashtag. The same applies for Close, Resolve and Implement
-    # keywords and their combinations.
+    # Regex matches numbers that come after Fix, fix, Fixed, fixed, Fixes, fixes keyword followed by any
+    # combination of spaces and colons, followed by exactly one hashtag. The same applies for Close and Resolve
+    # keywords and their combinations. Note: fixing, closing and resolving don't work.
     # Only first number is picked. To match multiple numbers you have to add fix or close or resolve or implement keyword
     # for each of them.
     # Example:
     # fixed: #1 #2 #3
-    # implements   ::: ::: :: #4
-    # closing: ##5
-    # resolves: # 6
-    # asdffixes #7
+    # resolved   ::: ::: :: #4
+    # closes: ##5
+    # fix: # 6
+    # asdfresolves #7
     # closeasdf: #8
-    # closes #9 <any sting in between> fixed #10 implementing #11
-    # Matches: [1, 4, 7, 9, 10, 11]
+    # closes #9 <any sting in between> fixed #10
+    # fixing #11
+    # Matches: [1, 4, 7, 9, 10]
     return pattern.findall(commit_message)
