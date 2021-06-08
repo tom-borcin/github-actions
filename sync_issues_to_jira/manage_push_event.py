@@ -19,9 +19,9 @@ def check_push_event(event):
     for issue in issue_numbers:
         print('issue: ' + issue)
         print('repo:' + str(repo.get_issue(int(issue))))
-        print('state:' + str(repo.get_issue(int(issue)).state)
-        print('pull_request:' + str(repo.get_issue(int(issue)).pull_request)
-        print('as_pull_request:' + str(repo.get_issue(int(issue)).as_pull_request)
+        print('state:' + str(repo.get_issue(int(issue)).state))
+        print('pull_request:' + str(repo.get_issue(int(issue)).pull_request))
+        print('as_pull_request:' + str(repo.get_issue(int(issue)).as_pull_request))
 
 def parse_commit_message(commit_message):
     # Regex matches numbers that come after Fix, fix, Fixed, fixed, Fixes, fixes, Fixing, fixing keyword followed by any
