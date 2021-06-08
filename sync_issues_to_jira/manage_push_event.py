@@ -1,4 +1,4 @@
-from github import Github, GithubException
+from github import Github, GithubException, UnknownObjectException
 import os
 import re
 
@@ -26,8 +26,10 @@ def check_push_event(event):
             if repo.get_issue(int(issue)).as_pull_request():
                 print('=======UPDATE=======')
                 update_pull_request(repo.get_issue(int(issue)).as_pull_request())
-        except GithubException.UnknownObjectException:
+        except GithubException:
             print("Cannot find issue '%s'. Skipping." % issue)
+        except UnknownObjectException:
+            print("Cannot find issue '%s'. Skipping. UnknownObjectException" % issue)
 
 def update_pull_request(pull_request):
     if pull_request.state == 'open':
