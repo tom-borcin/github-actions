@@ -20,10 +20,10 @@ def check_push_event(event):
         print('issue: ' + issue)
         print('repo:' + str(repo.get_issue(int(issue))))
         print('state:' + str(repo.get_issue(int(issue)).state))
-        print('pull_request:' + str(repo.get_issue(int(issue)).pull_request))
-        print('as_pull_request:' + str(repo.get_issue(int(issue)).as_pull_request))
-        if repo.get_issue(int(issue)).as_pull_request:
-            update_pull_request(repo.get_issue(int(issue)).as_pull_request)
+        print('pull_request:' + str(repo.get_issue(int(issue)).pull_request))(
+        print('as_pull_request:' + str(repo.get_issue(int(issue)).as_pull_request())))
+        if repo.get_issue(int(issue)).as_pull_request():
+            update_pull_request(repo.get_issue(int(issue)).as_pull_request())
 
 def update_pull_request(pull_request):
     original_title = pull_request.title
