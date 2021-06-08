@@ -28,7 +28,8 @@ def check_push_event(event):
 
 def update_pull_request(pull_request):
     if pull_request.state == 'open':
-        print('Pull request is open')
+        print('Pull request is open, nothing to update.')
+        return
     original_title = pull_request.title
     new_title = '[Merged] ' + original_title
     print('new_title: ' + new_title)
