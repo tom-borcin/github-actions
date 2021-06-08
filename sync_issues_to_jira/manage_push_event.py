@@ -18,16 +18,21 @@ def check_push_event(event):
     
     for issue in issue_numbers:
         print('issue: ' + issue)
-        print('repo:' + str(repo.get_issue(int(issue))))
-        print('state:' + str(repo.get_issue(int(issue)).state))
-        print('pull_request:' + str(repo.get_issue(int(issue)).pull_request))
-        print('as_pull_request:' + str(repo.get_issue(int(issue)).as_pull_request()))
+        print('repo: ' + str(repo.get_issue(int(issue))))
+        print('state: ' + str(repo.get_issue(int(issue)).state))
+        print('pull_request: ' + str(repo.get_issue(int(issue)).pull_request))
+        print('as_pull_request: ' + str(repo.get_issue(int(issue)).as_pull_request()))
         if repo.get_issue(int(issue)).as_pull_request():
+            print('=======UPDATE=======')
             update_pull_request(repo.get_issue(int(issue)).as_pull_request())
 
 def update_pull_request(pull_request):
+    if pull_request.state == 'open':
+        print('Pull request is open')
     original_title = pull_request.title
     new_title = '[Merged] ' + original_title
+    print('new_title: ' + new_title)
+    pull_request.edit(title=new_title)
     pull_request.create_issue_comment('This pull request was cherry-picked. Thank you for your contribution!')
 
 
