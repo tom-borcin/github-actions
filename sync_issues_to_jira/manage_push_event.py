@@ -1,4 +1,4 @@
-from github import Github
+from github import Github, GithubException
 import os
 import re
 
