@@ -22,6 +22,14 @@ def check_push_event(event):
         print('state:' + str(repo.get_issue(int(issue)).state))
         print('pull_request:' + str(repo.get_issue(int(issue)).pull_request))
         print('as_pull_request:' + str(repo.get_issue(int(issue)).as_pull_request))
+        if repo.get_issue(int(issue)).as_pull_request:
+            update_pull_request(repo.get_issue(int(issue)).as_pull_request)
+
+def update_pull_request(pull_request):
+    original_title = pull_request.title
+    new_title = '[Merged] ' + original_title
+    pull_request.create_issue_comment('This pull request was cherry-picked. Thank you for your contribution!')
+
 
 def parse_commit_message(commit_message):
     # Regex matches numbers that come after Fix, fix, Fixed, fixed, Fixes, fixes, Fixing, fixing keyword followed by any
