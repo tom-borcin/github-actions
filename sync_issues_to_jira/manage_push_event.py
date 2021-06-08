@@ -1,4 +1,5 @@
-from github import Github, GithubException, UnknownObjectException
+from github import Github
+from github.GithubException import GithubException, UnknownObjectException
 import os
 import re
 
