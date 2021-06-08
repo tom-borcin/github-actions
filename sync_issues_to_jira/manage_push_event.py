@@ -26,7 +26,7 @@ def check_push_event(event):
             if repo.get_issue(int(issue)).as_pull_request():
                 print('=======UPDATE=======')
                 update_pull_request(repo.get_issue(int(issue)).as_pull_request())
-        except UnknownObjectException:
+        except GithubException.UnknownObjectException:
             print("Cannot find issue '%s'. Skipping." % issue)
 
 def update_pull_request(pull_request):
