@@ -10,12 +10,15 @@ def check_push_event(event):
     commit_messages = []
     issue_numbers = []
     for commit in event['commits']:
+        print('commit: ' + str(commit))
         commit_message = commit['message']
         commit_messages += commit_message
+        print('comit message: ' + str(commit_message))
         issue_numbers += parse_commit_message(commit_message)
     
     for issue in issue_numbers:
-        print('issue:' + str(repo.get_issue(issue)))
+        print('issue: ' + issue)
+        print('repo:' + str(repo.get_issue(int(issue))))
 
 def parse_commit_message(commit_message):
     # Regex matches numbers that come after Fix, fix, Fixed, fixed, Fixes, fixes, Fixing, fixing keyword followed by any
