@@ -21,7 +21,7 @@ import sys
 import json
 from sync_pr import sync_remain_prs
 from sync_issue import *
-from manage_push_event import check_push_event
+from push_event import handle_push_event
 
 
 class _JIRA(JIRA):
