@@ -12,6 +12,8 @@ def handle_push_event(event):
         issue_numbers += parse_commit_message(commit_message)
     
     for issue in issue_numbers:
+        print("issue: " + str(issue))
+        print("issue as pull request: " + str(repo.get_issue(int(issue)).as_pull_request()))
         if repo.get_issue(int(issue)).as_pull_request():
             update_pull_request(repo.get_issue(int(issue)).as_pull_request())
 
