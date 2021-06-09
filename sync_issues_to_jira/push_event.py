@@ -4,20 +4,21 @@ import os
 import re
 
 def handle_push_event(event):
-    github = Github(os.environ['GITHUB_TOKEN'])
-    repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
     issue_numbers = []
     for commit in event['commits']:
         commit_message = commit['message']
         issue_numbers += parse_commit_message(commit_message)
     
+    github = Github(os.environ['GITHUB_TOKEN'])
+    repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
     for issue in issue_numbers:
-        print("issue: " + str(issue))
+        print("issue: " + issue)
         print("issue as pull request: " + str(repo.get_issue(int(issue)).as_pull_request()))
         if repo.get_issue(int(issue)).as_pull_request():
             update_pull_request(repo.get_issue(int(issue)).as_pull_request())
 
 def update_pull_request(pull_request):
+    print('update_pull_request')
     if pull_request.state == 'open':
         print('Pull request is open, nothing to update.')
         return
