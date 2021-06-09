@@ -1,5 +1,4 @@
 from github import Github
-from github.GithubException import GithubException, UnknownObjectException
 import os
 import re
 
@@ -13,14 +12,11 @@ def handle_push_event(event):
     repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
     for issue in issue_numbers:
         gh_issue = repo.get_issue(int(issue))
-        print("issue: " + issue)
-        print("issue pull request: " + str(gh_issue.pull_request))
         if gh_issue.pull_request:
-            print("Updating pull request #'%s'" % issue)
             update_pull_request(gh_issue.as_pull_request())
 
 def update_pull_request(pull_request):
-    print("Updating '%s'" % pull_request)
+    print("Updating %s" % pull_request)
     if pull_request.state == 'open':
         print('Pull request is open, nothing to update.')
         return
@@ -29,7 +25,8 @@ def update_pull_request(pull_request):
     new_title = '[Merged] ' + original_title
     pull_request.edit(title=new_title)
     # Thank contributor for opening pull request. Let them know we didn't throw it away
-    pull_request.create_issue_comment('This pull request was cherry-picked. Thank you for your contribution!')
+    pull_request.create_issue_comment('The pull request has been cherry-picked, the commit is linked above.\
+        Thank you for your contribution!')
 
 
 def parse_commit_message(commit_message):
