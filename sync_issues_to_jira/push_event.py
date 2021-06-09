@@ -13,6 +13,7 @@ def handle_push_event(event):
     repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
     for issue in issue_numbers:
         print("issue: " + issue)
+        print("issue pull request: " + str(repo.get_issue(int(issue)).pull_request))
         print("issue as pull request: " + str(repo.get_issue(int(issue)).as_pull_request()))
         if repo.get_issue(int(issue)).as_pull_request():
             update_pull_request(repo.get_issue(int(issue)).as_pull_request())
