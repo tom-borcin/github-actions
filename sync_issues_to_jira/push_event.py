@@ -6,10 +6,9 @@ import re
 def handle_push_event(event):
     github = Github(os.environ['GITHUB_TOKEN'])
     repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
-    commit_messages = []
     issue_numbers = []
     for commit in event['commits']:
-        commit_messages += commit['message']
+        commit_message = commit['message']
         issue_numbers += parse_commit_message(commit_message)
     
     for issue in issue_numbers:
