@@ -12,11 +12,11 @@ def handle_push_event(event):
     github = Github(os.environ['GITHUB_TOKEN'])
     repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
     for issue in issue_numbers:
+        gh_issue = repo.get_issue(int(issue))
         print("issue: " + issue)
-        print("issue pull request: " + str(repo.get_issue(int(issue)).pull_request))
-        print("issue as pull request: " + str(repo.get_issue(int(issue)).as_pull_request()))
-        if repo.get_issue(int(issue)).as_pull_request():
-            update_pull_request(repo.get_issue(int(issue)).as_pull_request())
+        print("issue pull request: " + str(gh_issue.pull_request))
+        if gh_issue.pull_request:
+            update_pull_request(gh_issue.as_pull_request())
 
 def update_pull_request(pull_request):
     print('update_pull_request')
