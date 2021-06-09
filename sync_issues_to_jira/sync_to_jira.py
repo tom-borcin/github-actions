@@ -56,7 +56,7 @@ def main():
 
     # Check if it's a push event
     if os.environ['GITHUB_EVENT_NAME'] == 'push':
-        check_push_event(event)
+        handle_push_event(event)
         return
 
     event_name = os.environ['GITHUB_EVENT_NAME']  # The name of the webhook event that triggered the workflow.
