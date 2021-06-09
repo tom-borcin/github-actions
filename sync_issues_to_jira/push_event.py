@@ -16,11 +16,11 @@ def handle_push_event(event):
         print("issue: " + issue)
         print("issue pull request: " + str(gh_issue.pull_request))
         if gh_issue.pull_request:
-            print("Updating pull request #'%s'", issue)
+            print("Updating pull request #'%s'" % issue)
             update_pull_request(gh_issue.as_pull_request())
 
 def update_pull_request(pull_request):
-    print("Updating pull request #'%s'", pull_request)
+    print("Updating '%s'" % pull_request)
     if pull_request.state == 'open':
         print('Pull request is open, nothing to update.')
         return
