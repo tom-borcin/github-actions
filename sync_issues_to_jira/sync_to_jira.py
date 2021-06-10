@@ -22,7 +22,8 @@ import json
 from sync_pr import sync_remain_prs
 from sync_issue import *
 from push_event import handle_push_event
-
+from utilities import check_repo, get_event
+from github.GithubException import GithubException
 
 class _JIRA(JIRA):
     def applicationlinks(self):
@@ -30,12 +31,11 @@ class _JIRA(JIRA):
 
 
 def main():
-    if 'GITHUB_REPOSITORY' not in os.environ:
-        print('Not running in GitHub action context, nothing to do')
-        return
-
-    if not os.environ['GITHUB_REPOSITORY'].startswith('tom-borcin/'):
-        print('Not an tom-borcin repo, nothing to sync to JIRA')
+    
+    # Check if script runs in GitHub action context and espressif repository
+    try:
+        check_repo()
+    except GithubException:
         return
 
     # Connect to Jira server
@@ -49,15 +49,8 @@ def main():
         sync_remain_prs(jira)
         return
 
-    # The path of the file with the complete webhook event payload. For example, /github/workflow/event.json.
-    with open(os.environ['GITHUB_EVENT_PATH'], 'r') as f:
-        event = json.load(f)
-        print(json.dumps(event, indent=4))
-
-    # Check if it's a push event
-    if os.environ['GITHUB_EVENT_NAME'] == 'push':
-        handle_push_event(event)
-        return
+    # Get webhook event payload
+    event = get_event()
 
     event_name = os.environ['GITHUB_EVENT_NAME']  # The name of the webhook event that triggered the workflow.
     action = event["action"]

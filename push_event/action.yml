@@ -1,0 +1,11 @@
+name: "Check push event"
+description: "Checks if push event cherry-picks pull request."
+inputs:
+  cron_job:
+    description: >
+      Whether the action is run as a cron job.
+      Set true to trigger syncing of new PRs.
+    required: false
+runs:
+  using: "docker"
+  image: "Dockerfile"

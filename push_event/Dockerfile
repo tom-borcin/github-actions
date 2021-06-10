@@ -1,7 +1,7 @@
 FROM node:current-buster-slim
 
-LABEL "com.github.actions.name"="Sync issues to JIRA"
-LABEL "com.github.actions.description"="Sync GitHub issues to JIRA"
+LABEL "com.github.actions.name"="Check push event"
+LABEL "com.github.actions.description"="Check push event for cherry-picked pull requests"
 LABEL "com.github.actions.icon"="fast-forward"
 LABEL "com.github.actions.color"="green"
 
@@ -16,10 +16,7 @@ RUN rm /tmp/requirements.txt
 
 RUN npm i -g @shogobg/markdown2confluence@0.1.0
 
-ADD sync_issue.py /sync_issue.py
-ADD sync_pr.py /sync_pr.py
-ADD sync_to_jira.py /sync_to_jira.py
-ADD test_sync_to_jira.py /test_sync_to_jira.py
+ADD push_event.py /push_event.py
 ADD util.py ../utilities/util.py
 
-ENTRYPOINT ["/usr/bin/python3", "/sync_to_jira.py"]
+ENTRYPOINT ["/usr/bin/python3", "/push_event.py"]
