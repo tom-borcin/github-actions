@@ -20,8 +20,8 @@ RUN rm /tmp/requirements.txt
 
 # RUN npm i -g @shogobg/markdown2confluence@0.1.0
 
-# ADD app /app
-ADD push_event.py /push_event.py
+ADD . /app
+ADD push_event/push_event.py push_event.py
 # ADD util.py ../utilities/util.py
 
 CMD ["/usr/bin/python3", "push_event.py"]
