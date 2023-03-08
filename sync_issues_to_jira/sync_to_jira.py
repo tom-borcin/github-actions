@@ -62,7 +62,6 @@ def main():
             issues = re.split('\W+', issue_numbers)
     print(f'{event = }')
     print(f'{issues = }')
-    print(f'{action = }')
     print(f'{issue_numbers = }')
     action = event["action"]
 
