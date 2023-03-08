@@ -53,9 +53,15 @@ def main():
 
     event_name = os.environ['GITHUB_EVENT_NAME']  # The name of the webhook event that triggered the workflow.
     print(f'{event = }')
-    print(f'event name: {event_name = }')
-    print(f'event dir(): {dir(event)}')
+    print(f'{event_name = }')
+    input_action = event['inputs']['action']
+    print(f'input action: {input_action}')
+    if event_name == 'workflow_dispatch':
+        event['action'] = event['inputs']['action']
+        issue_numbers = event['inputs']['issue-numbers']
     action = event["action"]
+    print(f'{action = }')
+    print(f'{issue_numbers = }')
 
     if event_name == 'pull_request':
         # Treat pull request events just like issues events for syncing purposes
