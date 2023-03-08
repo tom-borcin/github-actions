@@ -61,6 +61,11 @@ def main():
         if input_action == 'mirror issues':
             issue_numbers = event['inputs']['issue-numbers']
             issues = re.split('\W+', issue_numbers)
+            github = Github(os.environ['GITHUB_TOKEN'])
+            repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
+            issue = repo.get_issue(number=issues[0])
+            print(f'{issue = }')
+
     print(f'{event = }')
     print(f'{issues = }')
     print(f'{issue_numbers = }')
