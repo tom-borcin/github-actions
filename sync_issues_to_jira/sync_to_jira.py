@@ -54,7 +54,6 @@ def main():
     event_name = os.environ['GITHUB_EVENT_NAME']  # The name of the webhook event that triggered the workflow.
     print(f'{event = }')
     print(f'event dir(): {dir(event)}')
-    print(f'event vars: {vars(event)}')
     action = event["action"]
 
     if event_name == 'pull_request':
