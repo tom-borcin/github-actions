@@ -60,11 +60,11 @@ def main():
         if input_action == 'mirror issues':
             issue_numbers = event['inputs']['issue-numbers']
             issues = re.split('\W+', issue_numbers)
-    action = event["action"]
     print(f'{event = }')
     print(f'{issues = }')
     print(f'{action = }')
     print(f'{issue_numbers = }')
+    action = event["action"]
 
     if event_name == 'pull_request':
         # Treat pull request events just like issues events for syncing purposes
