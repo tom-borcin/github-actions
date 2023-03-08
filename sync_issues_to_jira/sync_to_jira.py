@@ -63,8 +63,7 @@ def main():
             issues = re.split('\W+', issue_numbers)
             github = Github(os.environ['GITHUB_TOKEN'])
             repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
-            issue_number = issues[0]
-            issue = repo.get_issue(number=issue_number)
+            issue = repo.get_issue(number=int(issues[0]))
             print(f'{issue = }')
 
     print(f'{event = }')
