@@ -56,6 +56,7 @@ def main():
     print(f'{event_name = }')
     input_action = event['inputs']['action']
     print(f'input action: {input_action}')
+    issues, issue_numbers = ''
     if event_name == 'workflow_dispatch':
         if input_action == 'mirror issues':
             issue_numbers = event['inputs']['issue-numbers']
