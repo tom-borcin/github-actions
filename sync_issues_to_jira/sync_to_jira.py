@@ -68,7 +68,8 @@ def main():
             event['action'] = 'opened'
             event['issue'] = issue.raw_data
 
-    print(f'{event = }')
+    print(f'======================= event ======================= ')
+    print(json.dumps(event, indent=4))
     print(f'{issues = }')
     print(f'{issue_numbers = }')
     action = event["action"]
