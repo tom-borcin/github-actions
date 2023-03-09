@@ -53,26 +53,11 @@ def main():
         print(json.dumps(event, indent=4))
 
     event_name = os.environ['GITHUB_EVENT_NAME']  # The name of the webhook event that triggered the workflow.
-    print(f'{event_name = }')
     input_action = event['inputs']['action']
-    print(f'input action: {input_action}')
-    issues, issue_numbers = '', ''
-    if event_name == 'workflow_dispatch':
-        if input_action == 'mirror issues':
-            event_name = 'issues'
-            issue_numbers = event['inputs']['issue-numbers']
-            issues = re.split('\W+', issue_numbers)
-            github = Github(os.environ['GITHUB_TOKEN'])
-            repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
-            issue = repo.get_issue(number=int(issues[0]))
-            print(f'{issue = }')
-            event['action'] = 'opened'
-            event['issue'] = issue.raw_data
 
-    print(f'======================= event ======================= ')
-    print(json.dumps(event, indent=4))
-    print(f'{issues = }')
-    print(f'{issue_numbers = }')
+    if event_name == 'workflow_dispatch' and input_action == 'mirror issues':
+        sync_issues_manually(jira, event)
+        return
     action = event["action"]
 
     if event_name == 'pull_request':
@@ -115,6 +100,18 @@ def main():
         print("No handler '%s' action '%s'. Skipping." % (event_name, action))
     else:
         action_handlers[event_name][action](jira, event)
+
+
+def sync_issues_manually(jira, event):
+    issue_numbers = event['inputs']['issue-numbers']
+    issues = re.split('\W+', issue_numbers)
+    github = Github(os.environ['GITHUB_TOKEN'])
+    repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
+    for issue_number in issues:
+        gh_issue = repo.get_issue(number=int(issue_number))
+        event['issue'] = gh_issue.raw_data
+        handle_issue_opened(jira, event)
+    return
 
 
 if __name__ == "__main__":
