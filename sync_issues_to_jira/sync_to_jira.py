@@ -65,6 +65,8 @@ def main():
             repo = github.get_repo(os.environ['GITHUB_REPOSITORY'])
             issue = repo.get_issue(number=int(issues[0]))
             print(f'{issue = }')
+            event['action'] = 'opened'
+            event['issue'] = issue.raw_data
 
     print(f'{event = }')
     print(f'{issues = }')
