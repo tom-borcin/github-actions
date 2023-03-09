@@ -59,6 +59,7 @@ def main():
     issues, issue_numbers = '', ''
     if event_name == 'workflow_dispatch':
         if input_action == 'mirror issues':
+            event_name = 'issues'
             issue_numbers = event['inputs']['issue-numbers']
             issues = re.split('\W+', issue_numbers)
             github = Github(os.environ['GITHUB_TOKEN'])
